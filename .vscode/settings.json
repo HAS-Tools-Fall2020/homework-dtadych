@@ -1,0 +1,5 @@
+{
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.pythonPath": "/Users/danielletadych/opt/miniconda3/envs/hastools/bin/python"
+}
