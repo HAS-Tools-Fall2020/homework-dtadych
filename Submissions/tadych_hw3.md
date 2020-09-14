@@ -6,7 +6,7 @@ Summary:
 
 Homework Questions:
 1. Describe the variables `flow`, `year`, `month`, and `day`. What type of objects are they, what are they composed of, and how long are they?
-  All are lists.  Flow is average daily flow (cms) and the others are date
+  All are lists.  Flow is average daily flow (cms) and the others are date integers
 2. How many times was the daily flow greater than your prediction in the month of September (express your answer in terms of the total number of times and as a percentage)?
   99.9%
 3. How would your answer to the previous question change if you considered only daily flows in or before 2000? Same question for the flows in or after the year 2010? (again report total number of times and percentage)
