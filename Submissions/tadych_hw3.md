@@ -1,5 +1,14 @@
 ## Danielle Tadych  - 9/14/2020 - Homework 3
 
+---------
+# Grade
+
+3/3 - Nice work!
+
+One note: on question 1 the flow data is a 'float' and the others are integers
+
+---
+
 Summary:
   First I downloaded new data up to Saturday.  For the week 1 forecast, I created an empty list that I wanted to put historical week 1 values in. Then I used a for loop to  pull out flow values in September with week 1 days and append them into my week 1 forecast list.  Then I printed some statistics regarding week 1 historical data.  Since it's a very dry year I went with the minimum.  I followed the same methodology with the other forecasts.  For the seasonal forecast, I just changed the days
 
