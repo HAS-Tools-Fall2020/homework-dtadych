@@ -12,8 +12,8 @@ import os
 # %% 
 # Step 3 - Read in the file in as dataframe
 # You will need to change the filename to match what you downloaded
-filename = 'streamflow_week1.txt'
-filepath = os.path.join('data', filename)
+filename = 'streamflow_week2.txt'
+filepath = os.path.join('/Users/danielletadych/Documents/FALL2020/Coding/homework-dtadych/data', filename)
 
 data=pd.read_table(filepath, sep = '\t', skiprows=30, 
         names=['agency_cd', 'site_no', 'datetime', 'flow', 'code']
@@ -29,12 +29,22 @@ data.tail(6) # look at the last  x rows  of the data
 
 data.iloc[350:360] # grab any subset of rows to look at
 data.flow[350:380]  #Grab a subset of just the flow data dat look at
-data.loc['1990-01-01']  #find a specific date
+data.loc['2000-01-01']  #find a specific date
 
 # %%
 # Step 5 - Make a plot of the data
 # Change the numbers on the followin lines to plot a different portion of the data
-ax=data.iloc[400:500]['flow'].plot(linewidth=0.5)
+ax=data.iloc[11150:11250]['flow'].plot(linewidth=0.5)
 ax.set_ylabel('Daily Flow [cfs]')
 ax.set_xlabel('Date')
 
+
+# Some notes from 9/8
+# %% always remember that python starts counting at zero
+#for example
+mylist = [3,35,56,70]
+
+#indexing (pulling out part of a list)
+mylist[0:3]
+
+# %%

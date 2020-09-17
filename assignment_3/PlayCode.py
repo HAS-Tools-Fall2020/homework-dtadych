@@ -154,3 +154,88 @@ print("Max:",max(W2historical))
 print("Avg:",np.mean(W2historical))
 print("Stdev:",np.std(W2historical))
 
+#%%
+#--- starting over
+
+
+# Making and empty list that I will use to store
+# index values I'm interested in
+w1h = []
+
+# Loop over the length of the flow list
+# and adding the index value to the ilist
+# if it meets some criteria that I specify
+for i in range(len(flow)):
+        if  month[i] == 9 and day[i] >=13 and day[i]<=19:
+                w1h.append(i)
+
+# see how many times the criteria was met by checking the length
+# of the index list that was generated
+print(len(w1h))
+
+#%%
+# Grabbing out the data that met the criteria
+# This  subset of data is just the elements identified 
+# in the ilist
+week1 = [flow[j] for j in w1h]
+#%%
+print("Pulling out the data:", week1)
+# %%
+print("Week 1 Statistics:")
+print("Min:",min(week1))
+print("Max:",max(week1))
+print("Avg:",np.mean(week1))
+print("Stdev:",np.std(week1))
+# %%
+
+#%%
+#week 2 again
+w2h = []
+for i in range(len(flow)):
+        if  month[i] == 9 and day[i] >=20 and day[i]<=26:
+                w2h.append(i)
+
+week2 = [flow[j] for j in w2h]
+print("Week 2 Statistics:")
+print("Min:",min(week2))
+print("Max:",max(week2))
+print("Avg:",np.mean(week2))
+print("Stdev:",np.std(week2))
+# %%
+#Forecast for the rest of the semester
+ltw = []
+for i in range(len(flow)):
+        if  month[i] == 9 and day[i] >=6 and day[i]<=12 and year[i]<2020:
+                ltw.append(i)
+
+#for i in range(len(flow)):
+#        if  month[i] == 11 and day[i] >=29 and day[i]<=30 and year[i]<2020:
+#                ltw.append(i)
+
+ltweek = [flow[j] for j in ltw]
+print("ltw Statistics:")
+print("Min:",min(ltweek))
+print("Max:",max(ltweek))
+print("Avg:",np.mean(ltweek))
+print("Stdev:",np.std(ltweek))
+# %%
+#Answering Questions
+Q = []
+for i in range(len(flow)):
+        if  month[i] == 9 and day[i] >=16 and day[i]<=30 and year[i]<2020:
+                Q.append(i)
+
+
+#for i in range(len(flow)):
+#        if  month[i] == 11 and day[i] >=29 and day[i]<=30 and year[i]<2020:
+#                ltw.append(i)
+
+Qval = [flow[j] for j in Q]
+print("ltw Statistics:")
+print("length:",len(Qval))
+print("Min:",min(Qval))
+print("Max:",max(Qval))
+print("Avg:",np.mean(Qval))
+print("Stdev:",np.std(Qval))
+
+# %%
