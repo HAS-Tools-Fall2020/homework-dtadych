@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.pythonPath": "/Users/danielletadych/opt/miniconda3/envs/hastools/bin/python"
+	}
+}
