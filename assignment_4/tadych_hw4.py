@@ -84,9 +84,160 @@ print('Method two flow quantiles:', flow_quants2[:,3])
 # %%
 flow_data.shape
 # %%
-
+#was trying something from the exercises
 # we want axis 1 (columns)
 
 print(np.max(flow_data[:,3], axis=1))
 # %%
-flow_data[1,]
+
+np.min(flow_data[:,3])
+np.max(flow_data[:,3])
+# %%
+#finding what year the minimum was
+
+minyear = flow_data[(flow_data[:,3] == 19.0), 0]
+# %%
+print(minyear)
+
+
+# %%
+# Seeing how many times flow was less than 60 in september
+flow_count = np.sum((flow_data[:,3] < 60) & (flow_data[:,1]==9))
+print(flow_count)
+# %%
+# Want to see which years meet this criteria
+seplowflowyear = flow_data[((flow_data[:,3] < 60) & (flow_data[:,1]==9)), 0]
+print(seplowflowyear)
+#%%
+# I now want to know some stats with september flow values during those dry years
+print("2002 stats:")
+print("max:",np.max(flow_data[(flow_data[:,0]==2002) & (flow_data[:,1]==9),3]))
+print("min:",np.min(flow_data[(flow_data[:,0]==2002) & (flow_data[:,1]==9),3]))
+print("mean:",np.mean(flow_data[(flow_data[:,0]==2002) & (flow_data[:,1]==9),3]))
+print()
+print("2004 stats:")
+print("max:",np.max(flow_data[(flow_data[:,0]==2004) & (flow_data[:,1]==9),3]))
+print("min:",np.min(flow_data[(flow_data[:,0]==2004) & (flow_data[:,1]==9),3]))
+print("mean:",np.mean(flow_data[(flow_data[:,0]==2004) & (flow_data[:,1]==9),3]))
+print()
+print("2011 stats:")
+print("max:",np.max(flow_data[(flow_data[:,0]==2011) & (flow_data[:,1]==9),3]))
+print("min:",np.min(flow_data[(flow_data[:,0]==2011) & (flow_data[:,1]==9),3]))
+print("mean:",np.mean(flow_data[(flow_data[:,0]==2011) & (flow_data[:,1]==9),3]))
+print()
+print("2019 stats:")
+print("max:",np.max(flow_data[(flow_data[:,0]==2019) & (flow_data[:,1]==9),3]))
+print("min:",np.min(flow_data[(flow_data[:,0]==2019) & (flow_data[:,1]==9),3]))
+print("mean:",np.mean(flow_data[(flow_data[:,0]==2019) & (flow_data[:,1]==9),3]))
+print()
+print("2020 stats")
+print("max:",np.max(flow_data[(flow_data[:,0]==2020) & (flow_data[:,1]==9),3]))
+print("min:",np.min(flow_data[(flow_data[:,0]==2020) & (flow_data[:,1]==9),3]))
+print("mean:",np.mean(flow_data[(flow_data[:,0]==2020) & (flow_data[:,1]==9),3]))
+# %%
+septquant = np.quantile(flow_data[(flow_data[:,1]==9),3], q=[0,0.1, 0.5, 0.9])
+print("All september quantiles:",septquant)
+print("2002:",np.quantile(flow_data[(flow_data[:,0]==2002) & (flow_data[:,1]==9),3], q=[0,0.1, 0.5, 0.9]))
+print("2004:",np.quantile(flow_data[(flow_data[:,0]==2004) & (flow_data[:,1]==9),3], q=[0,0.1, 0.5, 0.9]))
+print("2011:",np.quantile(flow_data[(flow_data[:,0]==2011) & (flow_data[:,1]==9),3], q=[0,0.1, 0.5, 0.9]))
+print("2019:",np.quantile(flow_data[(flow_data[:,0]==2019) & (flow_data[:,1]==9),3], q=[0,0.1, 0.5, 0.9]))
+print("2020:",np.quantile(flow_data[(flow_data[:,0]==2020) & (flow_data[:,1]==9),3], q=[0,0.1, 0.5, 0.9]))
+
+# %%
+# Make some histograms of dry years
+
+mybins = np.linspace(0, 200, num=30)
+plt.hist(flow_data[(flow_data[:,1]==9),3], bins = mybins)
+plt.title('All September')
+plt.xlabel('Flow [cfs]')
+plt.ylabel('Count')
+
+#%%
+mybins = np.linspace(0, 200, num=30)
+
+plt.hist(flow_data[(flow_data[:,0]==2002) & (flow_data[:,1]==9),3], bins = mybins)
+plt.title('2002')
+plt.xlabel('Flow [cfs]')
+plt.ylabel('Count')
+
+#%%
+plt.hist(flow_data[(flow_data[:,0]==2004) & (flow_data[:,1]==9),3], bins = mybins)
+plt.title('2004')
+plt.xlabel('Flow [cfs]')
+plt.ylabel('Count')
+#%%
+plt.hist(flow_data[(flow_data[:,0]==2011) & (flow_data[:,1]==9),3], bins = mybins)
+plt.title('2011')
+plt.xlabel('Flow [cfs]')
+plt.ylabel('Count')
+#%%
+plt.hist(flow_data[(flow_data[:,0]==2019) & (flow_data[:,1]==9),3], bins = mybins)
+plt.title('2019')
+plt.xlabel('Flow [cfs]')
+plt.ylabel('Count')
+#%%
+plt.hist(flow_data[(flow_data[:,0]==2020) & (flow_data[:,1]==9),3], bins = mybins)
+plt.title('2020')
+plt.xlabel('Flow [cfs]')
+plt.ylabel('Count')
+
+# %%
+#Seasonal forecast histograms
+print("histograms for the remaining months")
+plt.hist(flow_data[(flow_data[:,0]==2019) & (flow_data[:,1]==10),3], bins = mybins)
+plt.title('2019 october')
+plt.xlabel('Flow [cfs]')
+plt.ylabel('Count')
+# %%
+plt.hist(flow_data[(flow_data[:,0]==2019) & (flow_data[:,1]==11),3], bins = mybins)
+plt.title('2019 November')
+plt.xlabel('Flow [cfs]')
+plt.ylabel('Count')
+#%%
+plt.hist(flow_data[(flow_data[:,0]==2019) & (flow_data[:,1]==12),3], bins = mybins)
+plt.title('2019 December')
+plt.xlabel('Flow [cfs]')
+plt.ylabel('Count')
+# %%
+# 3. How many times was the daily flow greater than your prediction in the month of September
+#    (express your answer in terms of the total number of times and as a percentage)?
+
+totsepflow = np.sum((flow_data[:,1]==9))
+greaterthanpred = np.sum((flow_data[:,3] > 53.3) & (flow_data[:,1]==9))
+percent = greaterthanpred/totsepflow * 100
+print("Percent exceeded prediction:", percent,"%")
+
+#%%
+#4. How would your answer to the previous question change if you considered only daily 
+#   flows in or before 2000? Same question for the flows in or after the year 2010? 
+#   (again report total number of times and percentage)
+
+totsepflow = np.sum((flow_data[:,1]==9) & (flow_data[:,0] > 2000))
+greaterthanpred = np.sum((flow_data[:,3] > 53.3) & (flow_data[:,1]==9) & (flow_data[:,0] < 2000))
+percent2000 = greaterthanpred/totsepflow * 100
+print("Percent exceeded prediction before 2000:", percent2000,"%")
+
+totsepflow = np.sum((flow_data[:,1]==9) & (flow_data[:,0] > 2010))
+greaterthanpred = np.sum((flow_data[:,3] > 53.3) & (flow_data[:,1]==9) & (flow_data[:,0] > 2010))
+percent2010 = greaterthanpred/totsepflow * 100
+print("Percent exceeded prediction after 2010:", percent2010,"%")
+
+#%%
+#5. How does the daily flow generally change from the first half of September to the second?
+print("first half:")
+print("max:",np.max(flow_data[(flow_data[:,2]>=1) & (flow_data[:,2]<=15) & (flow_data[:,1]==9),3]))
+print("min:",np.min(flow_data[(flow_data[:,2]>=1) & (flow_data[:,2]<=15) & (flow_data[:,1]==9),3]))
+print("mean:",np.mean(flow_data[(flow_data[:,2]>=1) & (flow_data[:,2]<=15) & (flow_data[:,1]==9),3]))
+print("median:",np.median(flow_data[(flow_data[:,2]>=1) & (flow_data[:,2]<=15) & (flow_data[:,1]==9),3]))
+print("quantile:",np.quantile(flow_data[(flow_data[:,2]>=1) & (flow_data[:,2]<=15) & (flow_data[:,1]==9),3], q=[0,0.1, 0.5, 0.9]))
+
+print()
+
+print("second half:")
+print("max:",np.max(flow_data[(flow_data[:,2]>15) & (flow_data[:,1]==9),3]))
+print("min:",np.min(flow_data[(flow_data[:,2]>15) & (flow_data[:,1]==9),3]))
+print("mean:",np.mean(flow_data[(flow_data[:,2]>15) & (flow_data[:,1]==9),3]))
+print("median:",np.median(flow_data[(flow_data[:,2]>15) & (flow_data[:,1]==9),3]))
+print("quantile:",np.quantile(flow_data[(flow_data[:,2]>15) & (flow_data[:,1]==9),3], q=[0,0.1, 0.5, 0.9]))
+
+# %%
