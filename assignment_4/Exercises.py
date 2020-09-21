@@ -24,3 +24,26 @@ site = '09506000'
 
 # %%
 daily
+
+##--^ try this again later
+
+# %%
+# writing this so I don't forget it - shift+enter makes a new cell
+# I know there are cheat sheets but this will help me remember
+
+# Import necessary packages
+import os
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# %%
+# ** MODIFY **
+# Set the file name and path to where you have stored the data
+filename = 'streamflow_week4.txt'
+filepath = os.path.join('../data', filename)
+print(os.getcwd())
+print(filepath)
+# %%
+
+streamflow = np.loadtxt(filename)

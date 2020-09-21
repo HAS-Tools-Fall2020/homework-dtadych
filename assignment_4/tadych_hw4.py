@@ -82,3 +82,11 @@ flow_quants2 = np.quantile(flow_data, q=[0,0.1, 0.5, 0.9], axis=0)
 # and then just printing out the values for the flow column
 print('Method two flow quantiles:', flow_quants2[:,3])
 # %%
+flow_data.shape
+# %%
+
+# we want axis 1 (columns)
+
+print(np.max(flow_data[:,3], axis=1))
+# %%
+flow_data[1,]
