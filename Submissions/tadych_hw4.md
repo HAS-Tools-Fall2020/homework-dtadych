@@ -2,6 +2,11 @@
 
 ### *Danielle Tadych -  9/21/2020*
 
+___
+### Grade
+3/3 - nice job, I like your reasoning for your forecast. Next time include the plots in your  markdown.
+___
+
 **Forecast Prediction Summary:**
 Since it's a really dry year I searched for years in which flows in september were below 60.  Those were 2002, 2004, 2011, 2019, and then of course this year.  I then got summary stats for all of the dry years, include quantile analyses.  For my 1 week prediction, I went with the 50% quantile (53.3cfs) for 2020, and then for the 2 week out prediction I was more optimistic and went with the higher 2019 50% quantile (61.1cfs). For the seasonal forecast, I took a slightly different approach just to change things up.  I plotted monthly 2019 histograms for each of the remaining months, and went with approximately the most common flow value for that month.
 
