@@ -1,6 +1,12 @@
 # **HAS Tools - Homework 5**
 
 ### *Danielle Tadych -  9/28/2020*
+___
+## Grade
+3/3 - Nice job. I like your formatting on your MD file.  Don't worry about the graphs we are going to get into that this week ;)
+
+Note for next time - You should use the suggested atom plugin to add your graphs to your markdown file. The path here will only work on the local version on your computer.
+___
 
 **Forecast Prediction Summary:**
 Was not very fancy here.  I used almost the same logic as before regarding comparing to 2019 (super dry year) but this time I made monthly plots for the semester months (Sep-Dec).  For my one and 2 weekly forecast, I made a plot of September 2019 and 2020 flow values (Figure 1). Since 2020 is much dryer right now with no rain in sight I predicted ~60cms.  I then gradually added October, November, and December months to my plot and made predictions visually based on week.
