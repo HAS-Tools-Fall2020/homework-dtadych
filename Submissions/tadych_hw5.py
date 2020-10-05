@@ -77,6 +77,46 @@ plt.show()
 # %%
 #Forecasting stuff
 
+#All september flows by day
+flowsep=data[data["month"]==9]
+f, ax = plt.subplots()
+ax.plot(flowsep.day,
+        flowsep.flow)
+
+ax.set(title="Plot of Sep flow (cms)")
+#%%
+flowsep2020=flowsep[flowsep["year"]==2020]
+f, ax = plt.subplots()
+ax.plot(flowsep2020.day,
+        flowsep2020.flow,
+        flowsep2019.day,
+        flowsep2019.flow)
+
+ax.set(title="Plot of Sep flow (cms)")
+ax.legend()
+#%%
+#semester months 2019
+flowoct=data[data["month"]==10]
+flownov=data[data["month"]==11]
+flowdec=data[data["month"]==12]
+flowoct2019=flowoct[flowoct["year"]==2019]
+flownov2019=flownov[flownov["year"]==2019]
+flowdec2019=flowdec[flowdec["year"]==2019]
+
+#%%
+f, ax = plt.subplots()
+ax.plot(flowsep2019.day,
+        flowsep2019.flow,
+        flowoct2019.day,
+        flowoct2019.flow,
+#        flowsep2020.day,
+#        flowsep2020.flow,
+        flownov2019.day,
+        flownov2019.flow,
+        flowdec2019.day,
+        flowdec2019.flow)
+ax.legend("SOND")
+ax.set(title="Plot of Semester flow (cms)")
 
 #%%
 ### Questions
@@ -95,14 +135,45 @@ monthstats
 #%%
 # Number 3
 #  Five Highest
-print(data.flow.nlargest(5))
-
-        
+data.flow.nlargest(5)
 #%%
-print(data.month[data.flow.nlargest(5).index])
-print(data.flow[data.flow.nlargest(5).index])
+data.flow.nsmallest(5)
+#%%
+data.iloc[8582]
+#%%
+data.iloc[8583]
+#%%
+data.iloc[8581]
+#%%
+data.iloc[8580]
+#%%
+data.iloc[8584]
 
-print(data.datetime[data.flow.nsmallest(5).index])
-print(data.month[data.flow.nsmallest(5).index])
-print(data.flow[data.flow.nsmallest(5).index])
+#%%
+#Number 4
+for i in range(1, 13):
+        print(i)
+        print(data.flow[data.month == (i)].nlargest(1))
+        print(data.year[data.flow[data.month == (i)].nlargest(1).index])
+
+print('\n')
+
+for i in range(1, 13):
+        print(i)
+        print(data.flow[data.month == (i)].nsmallest(1))
+        print(data.year[data.flow[data.month == (i)].nsmallest(1).index])
+
+
 # Five Lowest
+# %%
+#Number 6
+prediction = 60
+tenperc = prediction*0.1
+print(tenperc)
+# %%
+flowrng = (prediction - tenperc, prediction + tenperc)
+print(flowrng)
+
+#%%
+historical = data.datetime[(data['flow']>flowrng[0])&(data['flow']<flowrng[1])]
+print(historical)
