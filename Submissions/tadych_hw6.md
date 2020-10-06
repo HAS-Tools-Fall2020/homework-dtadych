@@ -3,7 +3,7 @@
 ### *Danielle Tadych -  m/d/2020*
 ___
 ## Grade
-
+3/3 - Great analysis! Note though that your images are still not coming though. I didn't take off points this time but I will next time. The plugin I suggested in my last note should fix it and you should also always preview it to make sure it works. If you are having trouble stop by my office hours on Thursday and we can get it fixed up. 
 ___
 
 **Forecast Prediction Summary:**
