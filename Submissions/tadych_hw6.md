@@ -3,7 +3,7 @@
 ### *Danielle Tadych -  m/d/2020*
 ___
 ## Grade
-3/3 - Great analysis! Note though that your images are still not coming though. I didn't take off points this time but I will next time. The plugin I suggested in my last note should fix it and you should also always preview it to make sure it works. If you are having trouble stop by my office hours on Thursday and we can get it fixed up. 
+3/3 - Great analysis! Note though that your images are still not coming though. I didn't take off points this time but I will next time. The plugin I suggested in my last note should fix it and you should also always preview it to make sure it works. If you are having trouble stop by my office hours on Thursday and we can get it fixed up.
 ___
 
 **Forecast Prediction Summary:**
@@ -18,6 +18,8 @@ Final equation: y = 0.56x + 122.06
 coefficient of determination: 0.31
 
 <img alt="tadych_hw6-AR Model.png" src="tadych_hw6.assets/tadych_hw6-AR Model.png" width="" height="" >
+
+<img alt="fc809026.png" src="assets/fc809026.png" width="" height="" >
 
 **Model Performance:**
 
