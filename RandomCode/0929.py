@@ -49,10 +49,77 @@ dataframe.to_markdown()
 
 #%%
 data_frame = pd.DataFrame([[1, np.nan, 2],[2, 3, 5],[np.nan, 4, 6]])
-
-#%%
-#1) Use the function fill.na to fill the na values with 999
-data_frame.fillna(999)
 print(data_frame)
 #%%
-#2) Turn the 999 values back to nas. See how many different ways you can do this 
+#1) Use the function fill.na to fill the na values with 999
+dataf2 = data_frame.fillna(999)
+dataf2
+#%%
+#2) Turn the 999 values back to nas. See how many different ways you can do this
+dataf2[dataf2.isnull()] = np.nan
+dataf2
+# %%
+dataf3
+# %%
+#NaN is special, not a number, so we can't do computations with it
+
+#Random plotting notes
+# adding fig creates an object
+# ax are the graphs inside the object (figure)
+
+
+# %%
+# Class work for 10/5/2020
+# Given the following series of flow values and days Assume that the flow has uncertainty of +/- 25%
+# Come up with a way to visualize this information
+
+flow = np.random.randn(100)
+day = range(len(flow))
+stdev = 0.25
+upperrange = flow + flow*0.25
+lowerrange = flow - flow*0.25
+
+# %%
+fig, ax = plt.subplots()
+ax.plot(flow, color='blue', linewidth=1, label='flow')
+ax.plot(upperrange, color='orange', linewidth=0, label='stdev')
+ax.plot(lowerrange, color='orange', linewidth=0, label='flow')
+ax.fill_between(day, upperrange, lowerrange, color='orange')
+ax.set(title="Flow", xlabel="Date", ylabel="Weekly Avg Flow [cfs]")
+
+# %%
+# Functions
+x = np.arange(2, 11).reshape(3,3)
+y = 3
+answer = np.floor(np.divide(x,y))
+print(x)
+print(answer)
+# %%
+def get_floor(numerator, denominator):
+    fl = np.floor(np.divide(numerator, denominator))
+    print(fl)
+    return fl
+
+floor = get_floor(x, y)
+# %%
+def potatofamine():
+    
+# %%
+# Doc Strings
+
+
+def get_floor(numerator, denominator):
+    """ Function to do floor divide
+
+    Look at this sexy function!  It divides two
+    things that are np arrays
+    numerator = np.array...
+    denominator = np.array...
+    """
+    fl = np.floor(np.divid(numerator, denominator))
+    print("You did the thing")
+    print (fl)
+    return fl
+
+randomstuff = get_floor(x, y)
+# %%

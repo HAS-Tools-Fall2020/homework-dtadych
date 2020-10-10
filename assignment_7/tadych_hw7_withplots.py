@@ -1,5 +1,27 @@
-# Starter code for week 6 illustrating how to build an AR model
-# and plot it
+# HAS TOOLS - Forecast 7
+# Danielle Tadych
+
+# AR Forecast strategy:
+#  From previous homeworks, I picked out years where Semptember
+#   had flows below 60 cfs.  These I dubbed "drought years".
+#   droughtyrs = [2002, 2004, 2011, 2019, 2020]
+#  I then filtered the data for just these years and used this
+#  as training data  
+
+# %%
+# Defining some functions to filter the data
+def getflowyr(datum, year):
+        q = pd.DataFrame(datum[datum['year'] == year])
+        print(q)
+        return q
+def getflowyrmo(datum, year, month):
+        q = pd.DataFrame(datum[(datum['year'] == year) & (datum['month'] == month)])
+        print(q)
+        return q
+def getflowymd(datum, year, month, day):
+        q = pd.DataFrame(datum[(datum['year'] == year) & (datum['month'] == month) & (datum['day'] == day)])
+        print(q)
+        return q
 
 # %%
 # Import the modules we will use
@@ -19,7 +41,6 @@ filepath = os.path.join('../data', filename)
 print(os.getcwd())
 print(filepath)
 
-
 # %%
 # Read the data into a pandas dataframe
 data = pd.read_table(filepath, sep='\t', skiprows=30,
@@ -33,53 +54,31 @@ data['month'] = pd.DatetimeIndex(data['datetime']).month
 data['day'] = pd.DatetimeIndex(data['datetime']).dayofweek
 data['dayofweek'] = pd.DatetimeIndex(data['datetime']).dayofweek
 
-# Aggregate flow values to week
+# Aggregate flow values to week and subset full dataset
 flow_weekly = data.resample("W", on='datetime').mean()
 observedweeklyflow = flow_weekly
-# %%
-#   NOTE: from previous homeworks, I picked out years where
-#   September had flows below 60cfs.  These I dubbed "drought years"
-#               Only going to use this here
-
-# ---- Ignore this ----- v
-
-# Creating a new data frame of just drought year
-# droughtyrs = [2002, 2004, 2011, 2019, 2020]
-
-# flow_weekly.year.isin(droughtyrs)
-
-# droughtyrs = pd.DataFrame(flow_weekly[(flow_weekly['year'] == 2002)
-#                          or (flow_weekly['year'] == 2004)])
-#                          or (flow_weekly['year'] == 2011) & (flow_weekly['year'] == 2019) & (flow_weekly['year'] == 2020)
-
-# ---------------------- ^
 
 # %%
-# More failure ~DT
-# droughtyrs = [flow2002, flow2004, flow2011, flow2019, flow2020]
 
-flow2002 = pd.DataFrame(flow_weekly[flow_weekly['year'] == 2002])
-flow2004 = pd.DataFrame(flow_weekly[flow_weekly['year'] == 2004])
-flow2011 = pd.DataFrame(flow_weekly[flow_weekly['year'] == 2011])
-flow2019 = pd.DataFrame(flow_weekly[flow_weekly['year'] == 2019])
-flow2020 = pd.DataFrame(flow_weekly[flow_weekly['year'] == 2020])
-# %%
-# Failed for loop graveyard
-# for i in flow_weekly2:
-#        i = droughtyrs
-#        flow2002.append(i)
+droughtyrs = [2002, 2004, 2011, 2019, 2020]
+# droughtmos = range(1, 12)
+flow_weeklytest = pd.DataFrame()
 
-# %%
-flow_weekly2 = flow2002.append(flow2004)
-flow_weekly2 = flow_weekly2.append(flow2011)
-flow_weekly2 = flow_weekly2.append(flow2019)
-flow_weekly2 = flow_weekly2.append(flow2020)
+for k in droughtyrs:
+    f = getflowyr(flow_weekly, k)
+    flow_weeklytest = flow_weeklytest.append(f)
+    print(flow_weeklytest)
 
-print(flow_weekly2)
+#%%
+# Add a column for new week number for easier indexing without messing with datetime
+flow_weeklytest['randonum'] = 1
+flow_weeklytest['weeknumber'] = flow_weeklytest['randonum'].cumsum(axis=0)
+flow_weeklytest.pop('randonum')
+print(flow_weeklytest)
 
 # %%
 # Now that the dataframe looks okay
-flow_weekly = flow_weekly2
+flow_weekly = flow_weeklytest
 
 # %%
 # Building an autoregressive model
@@ -98,18 +97,9 @@ flow_weekly['flow_tm2'] = flow_weekly['flow'].shift(2)
 # Step 2 - pick what portion of the time series
 #          you want to use as training data
 
-startmo = 8
-endmo = 12
-
-# From Gill
-# train = flow_weekly[(flow_weekly["month"]==month1) & (flow_weekly["year"]
-#        >=year_trainmin)&(flow_weekly["year"] <=year_trainmax)]
-#        [['month','flow', 'flow_tm1', 'flow_tm2']]
-
-# %%
-
-train = flow_weekly[2:200][['flow', 'flow_tm1', 'flow_tm2']]
-test = flow_weekly[201:][['flow', 'flow_tm1', 'flow_tm2']]
+# training with data years prior to 2020 and testing with 2020
+train = flow_weekly[2:204][['flow', 'flow_tm1', 'flow_tm2']]
+test = flow_weekly[205:][['flow', 'flow_tm1', 'flow_tm2']]
 
 # Step 3: Fit a linear regression model using sklearn
 model = LinearRegression()
@@ -139,6 +129,12 @@ q_pred = model.intercept_ + model.coef_ * train['flow_tm1']
 last_week_flow = 500
 prediction = model.intercept_ + model.coef_ * last_week_flow
 
+# %%
+lastweekflowtest = observedweeklyflow[(observedweeklyflow['year'] == 2020) 
+                                       & (observedweeklyflow['month'] == 9)
+                                       & (observedweeklyflow['year'] == 27)]
+print(lastweekflowtest)
+
 
 # %%
 # Another example but this time using two time lags as inputs to the model
@@ -165,15 +161,16 @@ q_pred2 = model2.intercept_   \
 # Note that date is the index for the dataframe so it will
 # automatically treat this as our x axis unless we tell it otherwise
 fig, ax = plt.subplots()
-ax.plot(flow_weekly['flow'], label='full')
+ax.plot(observedweeklyflow['flow'], label='full')
 ax.plot(train['flow'], 'r:', label='training')
+ax.plot(test['flow'], '--', label='test')
 ax.set(title="Observed Flow", xlabel="Date",
        ylabel="Weekly Avg Flow [cfs]",
        yscale='log')
 ax.legend()
 # an example of saving your figure to a file
 fig.set_size_inches(5, 3)
-fig.savefig("Observed_Flow.png")
+# fig.savefig("Observed_Flow.png")
 
 # %%
 # 2. Time series of flow values with the x axis range limited
@@ -190,8 +187,8 @@ ax.legend()
 #%%
 # 3. Line  plot comparison of predicted and observed flows
 fig, ax = plt.subplots()
-ax.plot(observedweeklyflow['flow'], color='grey', linewidth=2, label='observed')
-ax.plot(train.index, q_pred_train, color='green', linestyle='--', 
+ax.plot(train['flow'], color='grey', linewidth=2, label='observed')
+ax.plot(train.index, q_pred2_train, color='green', linestyle='--', 
         label='simulated')
 ax.set(title="Observed Flow", xlabel="Date", ylabel="Weekly Avg Flow [cfs]",
         yscale='log')
@@ -217,17 +214,6 @@ ax.plot(np.sort(train['flow_tm1']), np.sort(q_pred_train), label='AR model')
 ax.legend()
 
 plt.show()
-
-# %%
-# 3. Line  plot comparison of predicted and observed flows
-fig, ax = plt.subplots()
-ax.plot(observedweeklyflow['flow'], color='grey', linewidth=2, label='observed')
-ax.plot(train.index, q_pred_train, color='green', linestyle='--', 
-        label='simulated')
-ax.set(title="Model Performance Time Series", xlabel="Date", ylabel="Weekly Avg Flow [cfs]",
-        yscale='log', xlim=[datetime.date(2002, 8, 1), datetime.date(2020, 12, 31)])
-ax.legend()
-fig.savefig("ModelPerformance_TS")
 
 # %%
 ## Actual Forecast

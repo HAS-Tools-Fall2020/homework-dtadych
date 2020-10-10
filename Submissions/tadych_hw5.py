@@ -38,7 +38,7 @@ data['day'] = data['day'].astype(int)
 
 flow2019=data[data["year"]==2019]
 # %%
-flowsep2019=flow2019[flow2019["month"]==9]
+flowsep2019=flow2019[(flow2019["month"]==9)&(flow2019["month"])]
 # %%
 #From the lessons - a quick plot
 f, ax = plt.subplots()
