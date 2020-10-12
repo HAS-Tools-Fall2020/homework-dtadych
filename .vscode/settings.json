@@ -1,6 +1,6 @@
 {
     "python.linting.pylintEnabled": false,
     "python.linting.enabled": true,
-    "python.pythonPath": "/Users/danielletadych/opt/miniconda3/envs/hastools/bin/python",
+    "python.pythonPath": "C:\\Users\\dnahh\\miniconda3\\envs\\hastools\\python.exe",
     "python.linting.flake8Enabled": true
 }
