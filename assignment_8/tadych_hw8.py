@@ -19,31 +19,36 @@ from sklearn.linear_model import LinearRegression
 # Defining some functions to filter the data
 
 
-def getflowyr(datum, year):
-    q = pd.DataFrame(datum[datum['year'] == year])
+def getflowyr(data_set, year):
+    'This function can create a pandas data frame filtered by year.'
+    q = pd.DataFrame(data_set[data_set['year'] == year])
     print(q)
     return q
 
 
-def getflowyrmo(datum, year, month):
-    q = pd.DataFrame(datum[(datum['year'] == year)
-                           & (datum['month'] == month)])
+def getflowyrmo(data_set, year, month):
+    'Can create a pandas dataframe filtered by year and month.'
+    q = pd.DataFrame(data_set[(data_set['year'] == year)
+                              & (data_set['month'] == month)])
     print(q)
     return q
 
 
-def getflowymw(datum, year, month, week):
-    q = pd.DataFrame(datum[(datum['year'] == year)
-                           & (datum['month'] == month)
-                           & (datum['weeknumber'] == week)])
+def getflowymw(data_set, year, month, week):
+    'Can create a pandas data frame filtered by year, month, and week'
+    q = pd.DataFrame(data_set[(data_set['year'] == year)
+                              & (data_set['month'] == month)
+                              & (data_set['weeknumber'] == week)])
     print(q)
     return q
+
 
 # %%
 # ** MODIFY **
 # Set the file name and path to where you have stored the data
-filename = 'streamflow_week7.txt'
+filename = 'streamflow_week8.txt'
 filepath = os.path.join('../data', filename)
+# filepath = os.path.join('../../data', filename)
 print(os.getcwd())
 print(filepath)
 
@@ -66,9 +71,8 @@ observedweeklyflow = flow_weekly
 
 # %%
 
-#
+# Using a for loop and the functions to create new weekly dataframe
 droughtyrs = [2002, 2004, 2011, 2019, 2020]
-# droughtmos = range(1, 12)
 flow_weeklytest = pd.DataFrame()
 
 for k in droughtyrs:
@@ -77,8 +81,10 @@ for k in droughtyrs:
 #    print(flow_weeklytest)
 
 # %%
-# Add a column for new week number for easier indexing
-#  without messing with datetime
+# Add a column for new week number for easier indexing later
+#  and without messing with datetime.
+#  I think there is an easier way to do this but I didn't
+#  get a chance to flesh it out.
 
 flow_weeklytest['randonum'] = 1
 flow_weeklytest['weeknumber'] = flow_weeklytest['randonum'].cumsum(axis=0)
@@ -126,17 +132,9 @@ print('intercept:', np.round(model.intercept_, 2))
 print('slope:', np.round(model.coef_, 2))
 
 # Step 4 Make a prediction with your model
-# %%
-# *From Diana
-# Line 132, I think an improvement would be to use the "tail" function,
-# rather than specifying the row with which you are trying to use as "lastweekflowtest". 
-# This could be accomplished by making a new variable = observedweeklyflow.tail(2). 
-# hen you could use iloc[0] to pick out last weeks flow. 
-# Then the code is reusable even when we get a new weeks worth of data.
+lastweekflow = observedweeklyflow.tail(2)
 
-
-
-lastweekflowtest = observedweeklyflow.iloc[1657]['flow']
+lastweekflowtest = lastweekflow.iloc[0]['flow']
 
 week1_AR = model.intercept_ + model.coef_ * lastweekflowtest
 week2_AR = model.intercept_ + model.coef_ * week1_AR
@@ -154,6 +152,20 @@ week1_forecast = np.mean(october['flow'])
 week2_forecast = week1_forecast + np.std(october['flow'])
 
 # %%
+# Seasonal Forecast
+# Just going to use the last months of 2019
+semestermonths = [8, 9, 10, 11, 12]
+semester2019 = pd.DataFrame()
+
+for i in semestermonths:
+    semesterflow = getflowyrmo(flow_weekly, 2019, i)
+    semester2019 = semester2019.append(semesterflow)
+
+# Cleaning up the new dataframe for prettier viewing
+del(semester2019["flow_tm1"], semester2019["flow_tm2"],
+    semester2019["site_no"])
+
+# %%
 # Printing stuff
 
 print("Autoregression Model Results:")
@@ -162,6 +174,8 @@ print("Week 2: ", np.round(week2_AR, decimals=2), "cfs")
 print()
 print("Actual Forecast:")
 print("Week 1: ", np.round(week1_forecast, decimals=2), "cfs")
-print("Week 2: ", np.round(week2_forecast, decimals=2), "cfs)
-
+print("Week 2: ", np.round(week2_forecast, decimals=2), "cfs")
+print()
+print("Seasonal Forecast:")
+semester2019
 # %%
