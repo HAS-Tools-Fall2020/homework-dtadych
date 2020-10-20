@@ -18,7 +18,8 @@ from sklearn.linear_model import LinearRegression
 
 # Defining some functions to filter the data
 
-
+# LC - nice work with the functions -- Try expanding your doc strings next time
+#  You should have a one line description followed by more details. 
 def getflowyr(data_set, year):
     'This function can create a pandas data frame filtered by year.'
     q = pd.DataFrame(data_set[data_set['year'] == year])
@@ -75,6 +76,7 @@ observedweeklyflow = flow_weekly
 droughtyrs = [2002, 2004, 2011, 2019, 2020]
 flow_weeklytest = pd.DataFrame()
 
+# LC - Great looping!! 
 for k in droughtyrs:
     f = getflowyr(flow_weekly, k)
     flow_weeklytest = flow_weeklytest.append(f)
@@ -85,6 +87,10 @@ for k in droughtyrs:
 #  and without messing with datetime.
 #  I think there is an easier way to do this but I didn't
 #  get a chance to flesh it out.
+
+# LC - Yeah so I think what you did with cumsum(axis=0) is trickey
+# But all dataframes already have row numbering occuring regardless of the 
+# index so I don't think you need this
 
 flow_weeklytest['randonum'] = 1
 flow_weeklytest['weeknumber'] = flow_weeklytest['randonum'].cumsum(axis=0)
