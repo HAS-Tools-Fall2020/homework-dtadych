@@ -51,7 +51,7 @@ def getflowymw(data_set, year, month, week):
 
 # %%
 # ** MODIFY **
-# Read the data into a pandas dataframe
+# Read the flow data into a pandas dataframe
 
 url = 'https://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=' \
       'rdb&site_no=09506000&referred_module=sw&period=&begin_date' \
@@ -82,13 +82,16 @@ mytoken = 'KygI8ZkKTIl5y03KGWd56C15e14MH5UAmID3cqCRnJ'
 
 # Daymet Example:
 # You can get Daymet data for a single pixle form this site:
-#https: // daymet.ornl.gov/single-pixel/ 
-# You can also experiment with their API Here: 
-# https: // daymet.ornl.gov/single-pixel/api  
+# https: // daymet.ornl.gov/single-pixel/
+# You can also experiment with their API Here:
+# https: // daymet.ornl.gov/single-pixel/api
 
-# Example reading it as a json file
-url = "https://daymet.ornl.gov/single-pixel/api/data?lat=34.9455&lon=-113.2549"  \
-       "&vars=prcp&format=json"
+# Reading in the json file - picked a pixel with the same coordinates as the streamflow station
+url = "https://daymet.ornl.gov/single-pixel/api/data?lat=34.448333&lon=-111.789167" \
+        "&vars=prcp&start=1989-01-01&end=2020-10-24&format=json"
+
+# url = "https://daymet.ornl.gov/single-pixel/api/data?lat=34.9455&lon=-113.2549"  \
+#       "&vars=prcp&format=json"
 response = req.urlopen(url)
 # Look at the kesy and use this to grab out the data
 responseDict = json.loads(response.read())
@@ -150,8 +153,8 @@ precip_test.drop(precip_test.tail(1).index,inplace=True)
 # %%
 # Building an linear model
 model = LinearRegression()
-x = flow_weekly['flow'].values.reshape(-1, 1)
-y = precip_test['precip'].values
+y = flow_weekly['flow'].values
+x = precip_test['precip'].values.reshape(-1, 1)
 model.fit(x, y)
 
 # Look at the results
@@ -208,4 +211,37 @@ print("Week 2: ", np.round(week2_forecast, decimals=2), "cfs")
 print()
 print("Seasonal Forecast:")
 semester2019
+# %%
+# Plots
+
+# Timeseries of observed flow values
+# Note that date is the index for the dataframe so it will
+# automatically treat this as our x axis unless we tell it otherwise
+fig, ax = plt.subplots()
+ax.plot(observedweeklyflow['flow'])
+ax.set(title="Observed Flow", xlabel="Date",
+       ylabel="Weekly Avg Flow [cfs]",
+       yscale='log')
+ax.legend()
+# an example of saving your figure to a file
+fig.set_size_inches(5, 3)
+fig.savefig("Observed_Flow_hw9.png")
+
+# Timeseries of observed Precipitation values
+# Note that date is the index for the dataframe so it will
+# automatically treat this as our x axis unless we tell it otherwise
+fig, ax = plt.subplots()
+ax.plot(precip_weekly['precip'], label='full')
+ax.set(title="Observed Daymet Precipitation", xlabel="Date",
+       ylabel="Weekly precipitation [mm]", xlim=[datetime.date(1989, 1, 1), datetime.date(2020, 12, 1)])
+# an example of saving your figure to a file
+fig.set_size_inches(5, 3)
+fig.savefig("Observed_PrecpitationDaymet.png")
+
+# Plotting them against eachother
+fig, ax = plt.subplots()
+ax.scatter(flow_weeklytest['flow'], precip_test['precip'])
+ax.set(title="Percipitation versus flow", xlabel="Flow (cfs)", ylabel="Precipitation (mm)")
+
+
 # %%
