@@ -8,6 +8,11 @@
 #  I then filtered the data for just these years and used this
 #   as training data
 
+# %%
+# Grade
+# 3/3 - nice job. Next time if you skip the markdown for your winnings
+# still just make a blank markdown and leave me a note sayint thats
+# what you decided to do and why. 
 
 # %%
 # Import the modules we will use
@@ -61,7 +66,7 @@ url = 'https://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=' \
 
 data = pd.read_table(url, sep='\t', skiprows=30,
                      names=['agency_cd', 'site_no', 'datetime', 'flow',
-                            'code'], parse_dates=['datetime'], 
+                            'code'], parse_dates=['datetime'],
                      )
 
 # Expand the dates to year month day
