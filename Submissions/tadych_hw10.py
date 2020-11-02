@@ -8,11 +8,6 @@
 #  I then filtered the data for just these years and used this
 #   as training data
 
-# %%
-# Grade
-# 3/3 - nice job. Next time if you skip the markdown for your winnings
-# still just make a blank markdown and leave me a note sayint thats
-# what you decided to do and why. 
 
 # %%
 # Import the modules we will use
@@ -56,17 +51,17 @@ def getflowymw(data_set, year, month, week):
 
 # %%
 # ** MODIFY **
-# Read the flow data into a pandas dataframe
+# Read the data into a pandas dataframe
 
 url = 'https://waterdata.usgs.gov/nwis/dv?cb_00060=on&format=' \
       'rdb&site_no=09506000&referred_module=sw&period=&begin_date' \
-      '=1989-01-01&end_date=2020-10-24'
+      '=1989-01-01&end_date=2020-10-31'
 
 # Read the data into a pandas dataframe
 
 data = pd.read_table(url, sep='\t', skiprows=30,
                      names=['agency_cd', 'site_no', 'datetime', 'flow',
-                            'code'], parse_dates=['datetime'],
+                            'code'], parse_dates=['datetime'], 
                      )
 
 # Expand the dates to year month day
@@ -87,19 +82,13 @@ mytoken = 'KygI8ZkKTIl5y03KGWd56C15e14MH5UAmID3cqCRnJ'
 
 # Daymet Example:
 # You can get Daymet data for a single pixle form this site:
-# https: // daymet.ornl.gov/single-pixel/
-# You can also experiment with their API Here:
-# https: // daymet.ornl.gov/single-pixel/api
+#https: // daymet.ornl.gov/single-pixel/ 
+# You can also experiment with their API Here: 
+# https: // daymet.ornl.gov/single-pixel/api  
 
-lat=34.448333
-lon=-111.789167
-
-# Reading in the json file - picked a pixel with the same coordinates as the streamflow station
-url = "https://daymet.ornl.gov/single-pixel/api/data?lat=34.448333&lon=-111.789167" \
-        "&vars=prcp&start=1989-01-01&end=2020-10-24&format=json"
-
-# url = "https://daymet.ornl.gov/single-pixel/api/data?lat=34.9455&lon=-113.2549"  \
-#       "&vars=prcp&format=json"
+# Example reading it as a json file
+url = "https://daymet.ornl.gov/single-pixel/api/data?lat=34.9455&lon=-113.2549"  \
+       "&vars=prcp&format=json"
 response = req.urlopen(url)
 # Look at the kesy and use this to grab out the data
 responseDict = json.loads(response.read())
@@ -132,7 +121,6 @@ daymetdata['dayofweek'] = pd.DatetimeIndex(daymetdata['datetime']).dayofweek
 
 # %%
 # Aggregate weekly
-# FROM MEKHA: Instead of W do W-SAT to end Saturday
 precip_weekly = daymetdata.resample("W", on='datetime').mean()
 print(precip_weekly)
 # %%
@@ -162,8 +150,8 @@ precip_test.drop(precip_test.tail(1).index,inplace=True)
 # %%
 # Building an linear model
 model = LinearRegression()
-y = flow_weekly['flow'].values
-x = precip_test['precip'].values.reshape(-1, 1)
+x = flow_weekly['flow'].values.reshape(-1, 1)
+y = precip_test['precip'].values
 model.fit(x, y)
 
 # Look at the results
@@ -192,7 +180,7 @@ week2_AR = model.intercept_ + model.coef_ * week1_AR
 # %%
 october = getflowyrmo(data, 2020, 10)
 
-week1_forecast = np.mean(october['flow'])
+week1_forecast = np.mean(october['flow'].tail(2))
 week2_forecast = week1_forecast + np.std(october['flow'])
 
 # %%
@@ -220,36 +208,4 @@ print("Week 2: ", np.round(week2_forecast, decimals=2), "cfs")
 print()
 print("Seasonal Forecast:")
 semester2019
-# %%
-# Plots
-
-# Timeseries of observed flow values
-# Note that date is the index for the dataframe so it will
-# automatically treat this as our x axis unless we tell it otherwise
-fig, ax = plt.subplots()
-ax.plot(observedweeklyflow['flow'])
-ax.set(title="Observed Flow", xlabel="Date",
-       ylabel="Weekly Avg Flow [cfs]",
-       yscale='log')
-# an example of saving your figure to a file
-fig.set_size_inches(5, 3)
-fig.savefig("Observed_Flow_hw9.png")
-
-# Timeseries of observed Precipitation values
-# Note that date is the index for the dataframe so it will
-# automatically treat this as our x axis unless we tell it otherwise
-fig, ax = plt.subplots()
-ax.plot(precip_weekly['precip'], label='full', color="purple")
-ax.set(title="Observed Daymet Precipitation", xlabel="Date", 
-       ylabel="Weekly precipitation [mm]", xlim=[datetime.date(1989, 1, 1), datetime.date(2020, 12, 1)])
-# an example of saving your figure to a file
-fig.set_size_inches(5, 3)
-fig.savefig("Observed_PrecpitationDaymet.png")
-
-# Plotting them against eachother
-fig, ax = plt.subplots()
-ax.scatter(flow_weeklytest['flow'], precip_test['precip'])
-ax.set(title="Percipitation versus flow", xlabel="Flow (cfs)", ylabel="Precipitation (mm)", xscale="log")
-
-
 # %%
