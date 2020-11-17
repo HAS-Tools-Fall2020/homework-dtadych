@@ -3,6 +3,7 @@
 #### *Danielle Tadych -  11/16/2020*
 ___
 ### Grade
+1/3 - Good effort on getting it downloaded. Minus points because you missed the python analysis part. 
 
 ___
 
