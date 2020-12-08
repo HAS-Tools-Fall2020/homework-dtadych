@@ -3,7 +3,7 @@
 ### *Danielle Tadych -  12/7/2020*
 ___
 ## Grade
-
+3/3 - Nice work, Yes you  can submit through Puma but you have  to follow the  instructions from the announcement because you have to setup your environment again and also use a different submit script.
 ---
 
 **Questions:**
